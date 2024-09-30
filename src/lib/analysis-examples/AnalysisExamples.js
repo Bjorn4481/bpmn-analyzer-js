@@ -37,7 +37,7 @@ export default function AnalysisExamples(eventBus, canvas) {
   this._canvas = canvas;
   this._eventBus = eventBus;
 
-  //this._init(); // Commented out to avoid the example to be loaded by default
+  //this._init(); // Commented out to avoid the example to be loaded by default (BJORN: I commented this line)
 }
 
 AnalysisExamples.prototype._init = function () {
