@@ -1,0 +1,48 @@
+{
+  "name": "bpmn-analyzer-js",
+  "version": "0.0.1",
+  "description": "bpmn-js including analysis after each save",
+  "main": "app/index.js",
+  "scripts": {
+    "all": "run-s lint pCheck build",
+    "build": "webpack",
+    "lint": "eslint .",
+    "start": "run-s dev",
+    "dev": "run-p build:watch serve",
+    "build:watch": "webpack -w",
+    "serve": "serve public",
+    "build:gh-pages": "rimraf ./docs && webpack --env ghPages",
+    "build:rust": "rimraf ../rust_bpmn_analyzer/webserver/public && webpack --env rust",
+    "pCheck": "prettier . --check",
+    "pWrite": "prettier . --write"
+  },
+  "author": {
+    "name": "Tim Kräuter",
+    "url": "https://timkraeuter.com/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/preset-env": "^7.25.4",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-bpmn-io": "^1.0.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.3.3",
+    "raw-loader": "^4.0.2",
+    "rimraf": "^6.0.1",
+    "serve": "^14.2.3",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "bpmn-js": "^17.9.2",
+    "diagram-js": "^14.9.0",
+    "min-dash": "^4.2.1",
+    "min-dom": "^5.1.1",
+    "randomcolor": "^0.6.2",
+    "tiny-svg": "^4.1.2"
+  }
+}
