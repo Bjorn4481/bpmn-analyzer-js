@@ -185,6 +185,9 @@ openExistingBoard.addEventListener("click", function () {
 
 modeler._emit("example.init", {});
 
+// Load the empty board (BJORN: I added this line)
+openBoard(emptyBoardXML);
+
 // helpers //////////////////////
 
 function debounce(fn, timeout) {
