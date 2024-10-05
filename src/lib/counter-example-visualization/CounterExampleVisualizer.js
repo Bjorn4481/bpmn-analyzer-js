@@ -70,9 +70,9 @@ export default function CounterExampleVisualizer(
     });
     eventBus.fire(COUNTER_EXAMPLE_VISUALIZATION_STARTED, { propertyResult });
 
-    notifications.showNotification({
+    /* notifications.showNotification({
       text: "Visualizing execution example started.",
-    });
+    }); */
 
     visualizeExecutionExample(propertyResult);
   }
@@ -103,9 +103,9 @@ export default function CounterExampleVisualizer(
    */
   function visualizeNextState(property, previousState, transitions, index) {
     if (index >= transitions.length) {
-      notifications.showNotification({
+      /* notifications.showNotification({
         text: "Visualizing execution example finished.",
-      });
+      }); */
       return;
     }
     const transition = transitions[index];

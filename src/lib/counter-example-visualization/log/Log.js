@@ -313,7 +313,7 @@ Log.prototype._init = function () {
 
   this._canvas.getContainer().appendChild(this._container);
 
-  this.paletteEntry = domify(`
+  /* this.paletteEntry = domify(`
     <div class="bts-entry" title="Toggle Execution Log">
       ${LogIcon()}
     </div>
@@ -323,7 +323,7 @@ Log.prototype._init = function () {
     this.toggle();
   });
 
-  this._tokenSimulationPalette.addEntry(this.paletteEntry, 3);
+  this._tokenSimulationPalette.addEntry(this.paletteEntry, 3); */
 };
 
 Log.prototype.isShown = function () {
@@ -336,7 +336,7 @@ Log.prototype.toggle = function (shown = !this.isShown()) {
   const container = this._container;
 
   if (shown) {
-    domClasses(container).remove("hidden");
+    //domClasses(container).remove("hidden");
   } else {
     domClasses(container).add("hidden");
   }
@@ -349,7 +349,7 @@ Log.prototype.log = function (options) {
   domClasses(this._placeholder).add("hidden");
 
   if (!this.isShown()) {
-    this._notifications.showNotification(options);
+    //this._notifications.showNotification(options);
   }
 
   const iconMarkup = icon.startsWith("<") ? icon : `<i class="${icon}"></i>`;

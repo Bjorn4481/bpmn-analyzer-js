@@ -64,9 +64,9 @@ PauseExecution.prototype.pause = function () {
 
   this._eventBus.fire(PAUSE_EXECUTION_EVENT);
 
-  this._notifications.showNotification({
+  /* this._notifications.showNotification({
     text: "Pause Execution",
-  });
+  }); */
 
   this.isPaused = true;
 };
@@ -83,9 +83,9 @@ PauseExecution.prototype.unpause = function () {
 
   this._eventBus.fire(PLAY_EXECUTION_EVENT);
 
-  this._notifications.showNotification({
+  /* this._notifications.showNotification({
     text: "Play Execution",
-  });
+  }); */
 
   this.isPaused = false;
 };
