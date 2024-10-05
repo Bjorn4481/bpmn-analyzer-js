@@ -16,17 +16,30 @@ select {
 }
 
 html,
-body,
-#canvas {
+body
+{
   font-family: "IBM Plex Sans", sans-serif;
   height: 100%;
   padding: 0;
   margin: 0;
 }
 
+#container {
+  display: flex;
+  
+}
+
+#canvas, #canvas2 {
+  height: 100vh; /* Ensures the container takes full viewport height */
+  width: 50%;
+  float: left;
+  box-sizing: border-box; /* Ensures padding and borders are included in width calculations */
+}
+
 #canvas {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 12px;
+  border-right: 1px solid #ccc;
 }
 
 .bottom-buttons {
@@ -280,7 +293,8 @@ button {
   border: solid 1px #cdcdcd;
 
   top: 55px;
-  right: 15px;
+  left: 50%; /* Move the left edge to 50% of the screen width */
+  transform: translateX(-50%); /* Shift the element by half of its own width to center it */
   padding: 5px;
   position: fixed;
 }
