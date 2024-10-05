@@ -111,6 +111,30 @@ PropertiesSummary.prototype._init = function () {
       <div id="ProperCompletion-icon" class="icon-question general-icon"></div>
       <div id="NoDeadActivities">No dead activities</div>
       <div id="NoDeadActivities-icon" class="icon-question general-icon"></div>
+      <div id="LineBreak"><hr></hr></div>
+      <div id="LineBreak-icon"></div>
+      <div id="StructuralScore">Structural Score</div>
+      <div id="StructuralScore-icon">90%</div>
+      <div id="LineBreak"><hr></hr></div>
+
+      <div id="LineBreak-icon"></div>
+      <div id="Semantic">Semantic similarity</div>
+      <div id="Semantic-icon" class="icon-question general-icon"></div>
+      <div id="Structural">Structural similarity</div>
+      <div id="Structural-icon" class="icon-question general-icon"></div>
+      <div id="Behavioral">Behavioral similarity</div>
+      <div id="Behavioral-icon" class="icon-question general-icon"></div>
+      <div id="LineBreak"><hr></hr></div>
+      <div id="LineBreak-icon"></div>
+      <div id="ComparisonScore">Comparison Score</div>
+      <div id="ComparisonScore-icon">60%</div>
+      <div id="LineBreak"><hr></hr></div>
+      <div id="LineBreak-icon"></div>
+
+      <div id="TotalScore">Total Score</div>
+      <div id="TotalScore-icon">75%</div>
+      <div id="LineBreak"><hr></hr></div>
+      <div id="LineBreak-icon"></div>
     </div>
   `);
 
