@@ -26,6 +26,10 @@ const modeler = new BpmnModeler({
   },
 });
 
+const reference_modeler = new BpmnModeler({
+  container: "#reference-canvas",
+});
+
 /* screen interaction */
 function enterFullscreen(element) {
   if (element.requestFullscreen) {
@@ -85,6 +89,10 @@ document
     }
   });
 
+/* delete only the second elementbyclass "djs-palette open" */
+document.getElementsByClassName("djs-palette open")[1].remove();
+
+
 /* file functions */
 function openFile(file, callback) {
   // check file api availability
@@ -119,9 +127,26 @@ fileInput.addEventListener("change", function (e) {
   openFile(e.target.files[0], openBoard);
 });
 
+const referenceFileInput = document.createElement("input");
+referenceFileInput.setAttribute("type", "file");
+referenceFileInput.style.display = "none";
+document.body.appendChild(referenceFileInput);
+referenceFileInput.addEventListener("change", function (e) {
+  openFile(e.target.files[0], openReferenceBoard);
+});
+
 function openBoard(xml) {
   // import board
   modeler.importXML(xml).catch(function (err) {
+    if (err) {
+      return console.error("could not import xml", err);
+    }
+  });
+}
+
+function openReferenceBoard(xml) {
+  // import board
+  reference_modeler.importXML(xml).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
     }
@@ -142,6 +167,7 @@ const downloadSvgLink = document.getElementById("js-download-svg");
 
 const openNew = document.getElementById("js-open-new");
 const openExistingBoard = document.getElementById("js-open-board");
+const openExistingReferenceBoard = document.getElementById("js-open-reference-board");
 
 function setEncoded(link, name, data) {
   const encodedData = encodeURIComponent(data);
@@ -173,6 +199,10 @@ modeler.on("commandStack.changed", exportArtifacts);
 modeler.on("import.done", exportArtifacts);
 modeler.on("example.import", (data) => openBoard(data.xml));
 
+modeler.on("commandStack.changed", exportArtifacts);
+reference_modeler.on("import.done", exportArtifacts);
+reference_modeler.on("example.import", (data) => openReferenceBoard(data.xml));
+
 openNew.addEventListener("click", function () {
   openBoard(emptyBoardXML);
 });
@@ -181,6 +211,12 @@ openExistingBoard.addEventListener("click", function () {
   // clear input so that previously selected file can be reopened
   fileInput.value = "";
   fileInput.click();
+});
+
+openExistingReferenceBoard.addEventListener("click", function () {
+  // clear input so that previously selected file can be reopened
+  referenceFileInput.value = "";
+  referenceFileInput.click();
 });
 
 modeler._emit("example.init", {});

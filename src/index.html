@@ -14,6 +14,10 @@
 </head>
 
 <body>
+  <div id="tue-logo">
+    <img src="../public/img/tue.png" alt="TU/e logo" />
+  </div>
+
   <div id="io-dialog-main" class="io-dialog io-dialog-open">
     <div class="dialog-content">
       <h1>Keyboard Shortcuts</h1>
@@ -40,7 +44,7 @@
 
   <div id="canvas-container">
     <div id="canvas"></div>
-    <div id="canvas2"></div>
+    <div id="reference-canvas"></div>
   </div>
 
 
@@ -83,6 +87,16 @@
             SVG image
           </button>
         </a>
+      </div>
+    </div>
+  </div>
+  <div class="reference-buttons buttons">
+    <div class="reference-row">
+      <div>open</div>
+      <div>
+        <button id="js-open-reference-board" class="reference-active" title="open XML board">
+          Reference BPMN file
+        </button>
       </div>
     </div>
   </div>

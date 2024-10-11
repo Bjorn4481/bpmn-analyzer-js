@@ -138,7 +138,8 @@ PropertiesSummary.prototype._init = function () {
     </div>
   `);
 
-  this._canvas.getContainer().appendChild(html);
+  // this._canvas.getContainer().appendChild(html);
+  document.body.appendChild(html);
 };
 
 PropertiesSummary.$inject = [

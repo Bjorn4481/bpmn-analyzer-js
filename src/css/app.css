@@ -29,7 +29,7 @@ body
   
 }
 
-#canvas, #canvas2 {
+#canvas, #reference-canvas {
   height: 100vh; /* Ensures the container takes full viewport height */
   width: 50%;
   float: left;
@@ -41,6 +41,16 @@ body
   font-size: 12px;
   border-right: 1px solid #ccc;
 }
+
+/* Tue Logo */
+
+#tue-logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+
+/* Bottom buttons */
 
 .bottom-buttons {
   bottom: 20px;
@@ -65,6 +75,36 @@ body
 }
 
 .bottom-buttons a.active {
+  opacity: 1;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Reference buttons */
+
+.reference-buttons {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(10%);
+}
+
+.reference-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reference-row:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.reference-active:hover,
+.reference-buttons button:hover {
+  cursor: pointer;
+  background-color: var(--color-button-hover);
+  transition: background-color 0.2s linear;
+}
+
+.reference-buttons a.active {
   opacity: 1;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
