@@ -1,5 +1,7 @@
 import BpmnModeler from "bpmn-js/lib/Modeler";
 
+import CustomDisableModeling from "./lib/custom-disable-modeling";
+
 import emptyBoardXML from "../resources/empty.bpmn";
 
 import AnalysisModule from "./lib/analysis/wasm"; // Analysis using WASM
@@ -30,6 +32,12 @@ const modeler = new BpmnModeler({
 
 const reference_modeler = new BpmnModeler({
   container: "#reference-canvas",
+  additionalModules: [
+    CustomDisableModeling,
+  ],
+  keyboard: {
+    bindTo: window,
+  },
 });
 
 /* screen interaction */
@@ -201,8 +209,6 @@ modeler.on("commandStack.changed", exportArtifacts);
 modeler.on("import.done", exportArtifacts);
 modeler.on("example.import", (data) => openBoard(data.xml));
 
-modeler.on("commandStack.changed", exportArtifacts);
-reference_modeler.on("import.done", exportArtifacts);
 reference_modeler.on("example.import", (data) => openReferenceBoard(data.xml));
 
 openNew.addEventListener("click", function () {
