@@ -38,6 +38,18 @@ module.exports = (env) => {
           test: /\.css$/i,
           use: ["style-loader", "css-loader"],
         },
+        {
+          test: /\.(png|jpe?g|gif)$/i, // images
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                name: "[path][name].[ext]",
+                context: `${path}/`, // Use the `src` path
+              },
+            },
+          ],
+        },
       ],
     },
     plugins: [

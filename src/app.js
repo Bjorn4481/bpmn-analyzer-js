@@ -9,7 +9,9 @@ import QuickFixesModule from "./lib/quick-fixes";
 import CounterExampleVisualizationModule from "./lib/counter-example-visualization";
 import AnalysisExamplesModule from "./lib/analysis-examples";
 import PropertiesSummaryModule from "./lib/properties-summary";
+import TueLogo from "./img/tue.png";
 
+document.getElementById('tue-logo').innerHTML = `<img src="${TueLogo}" alt="TU/e logo" class="tue-logo-image" />`;
 // modeler instance
 const modeler = new BpmnModeler({
   container: "#canvas",

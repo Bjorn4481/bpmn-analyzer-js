@@ -49,6 +49,9 @@ body
   top: 10px;
   left: 10px;
 }
+#tue-logo img {
+  width: 100px;
+}
 
 /* Bottom buttons */
 
