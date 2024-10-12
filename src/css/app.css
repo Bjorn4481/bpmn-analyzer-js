@@ -330,7 +330,9 @@ button {
   grid-row-gap: 5px;
   align-items: center;
 
-  background-color: #f8f8f8;
+  /* background-color: #f8f8f8; */
+  /* make slightly transparent background */
+  background-color: rgba(248, 248, 248, 0.5);
   border-radius: 3px;
   font-size: 13px;
   font-weight: bold;
