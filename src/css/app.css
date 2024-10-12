@@ -42,6 +42,16 @@ body
   border-right: 1px solid #ccc;
 }
 
+/* Collapse button */
+#collapse-reference-container {
+  position: fixed;
+  display: block;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
 /* Tue Logo */
 
 #tue-logo {
@@ -118,6 +128,7 @@ body
   display: none;
 }
 
+/* Buttons for keyboard and fullscreen */
 #io-editing-tools-buttons {
   display: block;
   position: fixed;
@@ -143,6 +154,10 @@ body
 
 .icon-xmark::before {
   content: "\e800";
+}
+
+.icon-arrow-right::before {
+  content: "\e806";
 }
 
 @font-face {
@@ -332,7 +347,7 @@ button {
 
   /* background-color: #f8f8f8; */
   /* make slightly transparent background */
-  background-color: rgba(248, 248, 248, 0.5);
+  background-color: rgba(248, 248, 248, 0.7);
   border-radius: 3px;
   font-size: 13px;
   font-weight: bold;
