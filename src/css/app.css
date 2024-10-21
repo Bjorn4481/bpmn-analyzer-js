@@ -226,7 +226,6 @@ button {
 [class*="general-icon"]::before {
   font-style: normal;
   font-weight: normal;
-  speak: none;
   display: inline-block;
   text-decoration: inherit;
   text-align: center;
