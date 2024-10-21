@@ -18,7 +18,7 @@ function startAnalysis(diagramXML, eventBus) {
 
     const runtime = endTime - startTime;
 
-    console.log("BPMN analysis runtime (wasm): " + runtime + " ms");
+    //console.log("BPMN analysis runtime (wasm): " + runtime + " ms");
 
     eventBus.fire("analysis.done", result);
   });
