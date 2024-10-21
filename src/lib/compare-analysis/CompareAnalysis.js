@@ -38,52 +38,82 @@ export default class CompareAnalysis {
                 const visited = new Set();  // Keep track of visited elements to prevent infinite loops
 
                 // Recursive function to explore all paths
-                const executeNextStep = (currentElement, eventLog) => {
+                const executeNextStep = (currentElement, eventLog, activeTokens) => {
                     if (!currentElement || visited.has(currentElement.id)) {
-                        // Add this event log to the collection of all variations
-                        allEventLogs.push([...eventLog]); // Clone the log
+                        console.log('Invalid element:', currentElement);
                         return;
                     }
-
+                
                     // Log the current event (store in the event log)
                     eventLog.push({
-                        caseId: 'case_1',  // Default caseId for now
+                        caseId: 1,
                         activity: currentElement.name || currentElement.id,
                         timestamp: getCurrentTimestamp(),
                     });
-
+                
                     // Mark the element as visited
                     visited.add(currentElement.id);
-
-                    // Check if the current element is a task or gateway
+            
+                
+                    // Handle Exclusive Gateway (one token follows one path)
                     if (currentElement.$type === 'bpmn:ExclusiveGateway') {
-                        //console.log(`Encountered gateway: ${currentElement.id}`);
-
-                        // Find all outgoing flows from the gateway
                         const outgoingFlows = sequenceFlows.filter(flow => flow.sourceRef.id === currentElement.id);
-
-                        // Explore each outgoing flow as a separate variation
-                        outgoingFlows.forEach(flow => {
-                            const nextElement = flowElements.find(el => el.id === flow.targetRef.id);
-                            executeNextStep(nextElement, [...eventLog]); // Pass a copy of the current event log
+                        if (outgoingFlows.length > 0) {
+                            // Explore each outgoing flow as a separate trace (one token follows one path)
+                            outgoingFlows.forEach(flow => {
+                                const nextElement = flowElements.find(el => el.id === flow.targetRef.id);
+                                if (nextElement) {
+                                    console.log('Following path:', currentElement.name || currentElement.id, '->', nextElement.name || nextElement.id);
+                                    executeNextStep(nextElement, [...eventLog], {...activeTokens}); // Continue with the next path
+                                }
+                            });
+                        }
+                        return; // Stop further execution after following one path
+                    }
+                
+                    // Handle Parallel Gateway (split into multiple tokens)
+                    if (currentElement.$type === 'bpmn:ParallelGateway') {
+                        const outgoingFlows = sequenceFlows.filter(flow => flow.sourceRef.id === currentElement.id);
+                        const nextElements = outgoingFlows.map(flow => flowElements.find(el => el.id === flow.targetRef.id));
+                
+                        // Increase the token count to track how many tokens are now active
+                        activeTokens.count += nextElements.length - 1; // Increase by number of new tokens, minus 1 for the current token
+                
+                        nextElements.forEach(nextElement => {
+                            const currentLog = eventLog; // Clone the current log for each parallel path
+                            executeNextStep(nextElement, currentLog, activeTokens); // Continue each path in parallel
                         });
-                    } else {
-                        // Find the next sequence flow (outgoing flow) and its target (tasks/events)
-                        const outgoingFlow = sequenceFlows.find(flow => flow.sourceRef.id === currentElement.id);
-                        if (outgoingFlow) {
-                            const nextElement = flowElements.find(el => el.id === outgoingFlow.targetRef.id);
-                            executeNextStep(nextElement, eventLog); // Continue the current event log
-                        } else {
-                            // If no outgoing flow, the path ends here
-                            allEventLogs.push([...eventLog]); // Add the final log
+                        return; // Stop this path after creating tokens
+                    }
+                
+                    // Handle normal sequence flows (tasks/events)
+                    const outgoingFlow = sequenceFlows.find(flow => flow.sourceRef.id === currentElement.id);
+                    if (outgoingFlow) {
+                        const nextElement = flowElements.find(el => el.id === outgoingFlow.targetRef.id);
+                        if (nextElement) {
+                            executeNextStep(nextElement, eventLog, activeTokens); // Continue the trace
                         }
                     }
-
-                    visited.delete(currentElement.id);  // Unmark the element to allow revisiting in other variations
-                };
+                    else {
+                        activeTokens.count--;
+                        console.log('Token reached end:', currentElement.name || currentElement.id);
+                        
+                        // Only push the log to allEventLogs when all tokens have reached the end
+                        if (activeTokens.count === 0) {
+                            allEventLogs.push([...eventLog]); // Push the completed log to allEventLogs
+                            console.log('All tokens reached end. Log:', eventLog);
+                        }
+                        return; // Stop this path
+                    }
+                
+                    visited.delete(currentElement.id); // Unmark to allow revisiting in other variations
+                };                
 
                 // Start the process simulation from the start event
-                executeNextStep(startEvent, []);
+                if (startEvent) {
+                    const activeTokens = { count: 1 }; // Initially, there is 1 active token
+                    executeNextStep(startEvent, [], activeTokens);
+                }
 
                 // Once all variations are explored, display the event logs in XES format
                 this.displayAllXESLogs(allEventLogs);
@@ -133,5 +163,21 @@ export default class CompareAnalysis {
 
         const xesLog = `${xesHeader}${xesTraces}${xesFooter}`;
         console.log('XES Log:\n', xesLog);
+    }
+    generatePermutations(elements) {
+        if (elements.length <= 1) {
+            return [elements];
+        }
+    
+        const permutations = [];
+        elements.forEach((el, i) => {
+            const remaining = [...elements.slice(0, i), ...elements.slice(i + 1)];
+            const remainingPermutations = this.generatePermutations(remaining);
+            remainingPermutations.forEach(permutation => {
+                permutations.push([el, ...permutation]);
+            });
+        });
+    
+        return permutations;
     }
 }
