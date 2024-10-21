@@ -34,6 +34,8 @@ document.getElementById('collapse-reference-expanded').addEventListener('click',
   if (noReferenceModelDiv) {
     noReferenceModelDiv.style.display = 'none';
   }
+  modeler.get("canvas").zoom("fit-viewport");
+  modeler.get("canvas").zoom("fit-viewport");
 });
 
 // detect if user pressed expand button
@@ -57,13 +59,18 @@ document.getElementById('collapse-reference-collapsed').addEventListener('click'
   if (noReferenceModelDiv) {
     noReferenceModelDiv.style.display = 'block';
   }
-  // TODO: auto fit both models in both canvases (if canvas has model)
+  // zoom to fit-viewport
+  reference_modeler.get("canvas").zoom("fit-viewport");
+  modeler.get("canvas").zoom("fit-viewport");
+  modeler.get("canvas").zoom("fit-viewport");
 });
 
 document.getElementById('tue-logo').innerHTML = `<img src="${TueLogo}" alt="TU/e logo" class="tue-logo-image" />`;
 // modeler instance
 const modeler = new BpmnModeler({
   container: "#canvas",
+  width: "100%",
+  height: "100%",
   additionalModules: [
     AnalysisModule,
     AnalysisOverlaysModule,
@@ -79,6 +86,8 @@ const modeler = new BpmnModeler({
 
 const reference_modeler = new BpmnModeler({
   container: "#reference-canvas",
+  width: "100%",
+  height: "100%",
   additionalModules: [
     CustomDisableModeling,
   ],
@@ -194,7 +203,9 @@ referenceFileInput.addEventListener("change", function (e) {
 
 function openBoard(xml) {
   // import board
-  modeler.importXML(xml).catch(function (err) {
+  modeler.importXML(xml).then(function () {
+    modeler.get("canvas").zoom("fit-viewport");
+  }).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
     }
@@ -204,7 +215,9 @@ function openBoard(xml) {
 function openReferenceBoard(xml) {
   // import board
   hideLoadReferenceModelText();
-  reference_modeler.importXML(xml).catch(function (err) {
+  reference_modeler.importXML(xml).then(function () {
+    reference_modeler.get("canvas").zoom("fit-viewport");
+  }).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
     }
@@ -300,3 +313,8 @@ function debounce(fn, timeout) {
     timer = setTimeout(fn, timeout);
   };
 }
+
+// TEST button event listener
+document.getElementById("test").addEventListener("click", function () {
+  modeler.get("canvas").zoom("fit-viewport");
+});
