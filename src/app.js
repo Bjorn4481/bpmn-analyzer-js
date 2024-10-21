@@ -12,6 +12,7 @@ import CounterExampleVisualizationModule from "./lib/counter-example-visualizati
 import AnalysisExamplesModule from "./lib/analysis-examples";
 import PropertiesSummaryModule from "./lib/properties-summary";
 import TueLogo from "./img/tue.png";
+import CompareAnalysis from "./lib/compare-analysis/CompareAnalysis";
 
 // detect if user pressed collapse button
 document.getElementById('collapse-reference-expanded').addEventListener('click', function () {
@@ -314,7 +315,10 @@ function debounce(fn, timeout) {
   };
 }
 
+// Create compare analysis instance
+const compareAnalysis = new CompareAnalysis();
+
 // TEST button event listener
 document.getElementById("test").addEventListener("click", function () {
-  modeler.get("canvas").zoom("fit-viewport");
+  compareAnalysis.compare(modeler, reference_modeler);
 });
