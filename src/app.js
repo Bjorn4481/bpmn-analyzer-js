@@ -13,6 +13,53 @@ import AnalysisExamplesModule from "./lib/analysis-examples";
 import PropertiesSummaryModule from "./lib/properties-summary";
 import TueLogo from "./img/tue.png";
 
+// detect if user pressed collapse button
+document.getElementById('collapse-reference-expanded').addEventListener('click', function () {
+  // hide reference canvas
+  document.getElementById('reference-canvas').style.display = 'none';
+  // also hide <div id="reference-buttons-container" class="reference-buttons buttons">
+  document.getElementById('reference-buttons-container').style.display = 'none';
+  // set width of canvas to 100%
+  document.getElementById('canvas').style.width = '100%';
+  // hide collapse button
+  document.getElementById('collapse-reference-expanded').style.display = 'none';
+  // show expand button
+  document.getElementById('collapse-reference-collapsed').style.display = 'block';
+  // shift properties panel to the right
+  document.getElementsByClassName('properties')[0].style.transform = 'translateX(0px)';
+  document.getElementsByClassName('properties')[0].style.left = 'auto';
+  document.getElementsByClassName('properties')[0].style.right = '15px';
+  // hide no-reference-model div if it exists
+  const noReferenceModelDiv = document.getElementById("no-reference-model");
+  if (noReferenceModelDiv) {
+    noReferenceModelDiv.style.display = 'none';
+  }
+});
+
+// detect if user pressed expand button
+document.getElementById('collapse-reference-collapsed').addEventListener('click', function () {
+  // show reference canvas
+  document.getElementById('reference-canvas').style.display = 'block';
+  // also show <div id="reference-buttons-container" class="reference-buttons buttons">
+  document.getElementById('reference-buttons-container').style.display = 'block';
+  // set width of canvas to 50%
+  document.getElementById('canvas').style.width = '50%';
+  // show collapse button
+  document.getElementById('collapse-reference-expanded').style.display = 'block';
+  // hide expand button
+  document.getElementById('collapse-reference-collapsed').style.display = 'none';
+  // shift properties panel to the left
+  document.getElementsByClassName('properties')[0].style.transform = 'translateX(-50%)';
+  document.getElementsByClassName('properties')[0].style.left = '50%';
+  document.getElementsByClassName('properties')[0].style.right = 'auto';
+  // show no-reference-model div if it exists
+  const noReferenceModelDiv = document.getElementById("no-reference-model");
+  if (noReferenceModelDiv) {
+    noReferenceModelDiv.style.display = 'block';
+  }
+  // TODO: auto fit both models in both canvases (if canvas has model)
+});
+
 document.getElementById('tue-logo').innerHTML = `<img src="${TueLogo}" alt="TU/e logo" class="tue-logo-image" />`;
 // modeler instance
 const modeler = new BpmnModeler({
@@ -156,11 +203,19 @@ function openBoard(xml) {
 
 function openReferenceBoard(xml) {
   // import board
+  hideLoadReferenceModelText();
   reference_modeler.importXML(xml).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
     }
   });
+}
+
+function hideLoadReferenceModelText() {
+  const noReferenceModelDiv = document.getElementById("no-reference-model");
+  if (noReferenceModelDiv) {
+    noReferenceModelDiv.remove();
+  }
 }
 
 function saveSVG() {

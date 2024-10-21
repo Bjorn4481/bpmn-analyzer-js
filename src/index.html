@@ -17,9 +17,9 @@
 <body>
   <div id="tue-logo"></div>
 
-  <div id="collapse-reference-container" class="buttons">
-    <button id="collapse-reference" class="buttons-active" title="Collapse reference model">
-      <span class="fa fa-arrow-right"> </span>
+  <div id="collapse-reference-container-expanded" class="buttons">
+    <button id="collapse-reference-expanded" class="buttons-active" title="Collapse reference model">
+      <span class="fa fa-arrow-right" style="font-size: 20px;"> </span>
     </button>
   </div>
 
@@ -54,6 +54,9 @@
 
 
   <div id="io-editing-tools-buttons" class="buttons">
+    <button id="collapse-reference-collapsed" class="buttons-active" title="Collapse reference model" style="display: none;">
+      <span class="fa fa-arrow-left" style="font-size: 20px;"> </span>
+    </button>
     <button id="js-toggle-keyboard-help" class="buttons-active" title="Toggle keyboard shortcuts overlay">
       <span class="icon-keyboard general-icon"> </span>
     </button>
@@ -95,7 +98,7 @@
       </div>
     </div>
   </div>
-  <div class="reference-buttons buttons">
+  <div id="reference-buttons-container" class="reference-buttons buttons">
     <div class="reference-row">
       <div>open</div>
       <div>
@@ -105,7 +108,13 @@
       </div>
     </div>
   </div>
+
+  <div id="no-reference-model" class="no-reference-model">
+    <p>Load reference model to compare</p>
+  </div>
+
 </body>
+
 <script src="./app.js"></script>
 
 </html>

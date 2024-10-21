@@ -29,7 +29,13 @@ body
   
 }
 
-#canvas, #reference-canvas {
+#canvas {
+  height: 100vh; /* Ensures the container takes full viewport height */
+  width: 50%;
+  float: left;
+  box-sizing: border-box; /* Ensures padding and borders are included in width calculations */
+}
+#reference-canvas {
   height: 100vh; /* Ensures the container takes full viewport height */
   width: 50%;
   float: left;
@@ -43,7 +49,7 @@ body
 }
 
 /* Collapse button */
-#collapse-reference-container {
+#collapse-reference-container-expanded {
   position: fixed;
   display: block;
   top: 10px;
@@ -130,10 +136,11 @@ body
 
 /* Buttons for keyboard and fullscreen */
 #io-editing-tools-buttons {
-  display: block;
+  display: flex;
   position: fixed;
   top: 10px;
   right: 15px;
+  gap: 5px; /* Add some space between the buttons */
 }
 
 .icon-keyboard::before {
@@ -156,9 +163,6 @@ body
   content: "\e800";
 }
 
-.icon-arrow-right::before {
-  content: "\e806";
-}
 
 @font-face {
   font-family: "Font Awesome 5 Free Solid";
@@ -360,6 +364,20 @@ button {
   position: fixed;
 }
 
+.properties > :nth-child(2n) {
+  text-align: center; /* Center text of the right items in the grid */
+  align-self: center; /* Center the icon vertically */
+}
+
 .binding {
   font-family: monospace;
+}
+
+.no-reference-model {
+  display: block;
+  position: fixed;
+  top: 40%;
+  left: 69%;
+  text-align: center;
+  font-style: italic;
 }

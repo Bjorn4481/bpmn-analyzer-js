@@ -103,6 +103,8 @@ export default function PropertiesSummary(
 PropertiesSummary.prototype._init = function () {
   const html = domify(`
     <div class="properties">
+      <div id="Simulate">Simulate</div>
+      <div><button id="Simulate-icon" class="fa fa-play"></button></div>
       <div id="Safeness">Synchronization</div>
       <div id="Safeness-icon" class="icon-question general-icon"></div>
       <div id="OptionToComplete">Guaranteed termination</div>
