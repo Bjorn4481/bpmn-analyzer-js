@@ -218,6 +218,8 @@ function openReferenceBoard(xml) {
   hideLoadReferenceModelText();
   reference_modeler.importXML(xml).then(function () {
     reference_modeler.get("canvas").zoom("fit-viewport");
+    compareAnalysis.compare(modeler, reference_modeler);
+    setTimeout(updateComparisonScore, 10);
   }).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
@@ -271,6 +273,9 @@ const exportArtifacts = debounce(function () {
   saveBoard().then(function (result) {
     setEncoded(downloadLink, "bpmn.bpmn", result.xml);
     modeler._emit("analysis.start", result);
+    setTimeout(updateStructuralScore, 10);
+    compareAnalysis.compare(modeler, reference_modeler);
+    setTimeout(updateComparisonScore, 10);
   });
 }, 500);
 
@@ -278,7 +283,9 @@ modeler.on("commandStack.changed", exportArtifacts);
 modeler.on("import.done", exportArtifacts);
 modeler.on("example.import", (data) => openBoard(data.xml));
 
-reference_modeler.on("example.import", (data) => openReferenceBoard(data.xml));
+reference_modeler.on("example.import", (data) => {
+  openReferenceBoard(data.xml);
+});
 
 openNew.addEventListener("click", function () {
   openBoard(emptyBoardXML);
@@ -321,4 +328,196 @@ const compareAnalysis = new CompareAnalysis();
 // TEST button event listener
 document.getElementById("test").addEventListener("click", function () {
   compareAnalysis.compare(modeler, reference_modeler);
+  updateComparisonScore();
 });
+
+function updateStructuralScore() {
+  try {
+      // Define the IDs of the four icon divs to check
+      const iconIds = [
+          'Safeness-icon',
+          'OptionToComplete-icon',
+          'ProperCompletion-icon',
+          'NoDeadActivities-icon'
+      ];
+
+      let total = iconIds.length;
+      let checks = 0;
+
+      // Iterate over each icon ID
+      iconIds.forEach(id => {
+          const iconElement = document.getElementById(id);
+          if (iconElement) {
+              // Check if the icon has both 'icon-check' and 'fulfilled' classes
+              if (iconElement.classList.contains('icon-check') && iconElement.classList.contains('fulfilled')) {
+                  checks += 1;
+              }
+          } else {
+              console.warn(`Icon with ID '${id}' not found.`);
+          }
+      });
+
+      // Calculate percentage
+      let scorePercentage = 0;
+      if (total > 0) {
+          scorePercentage = (checks / total) * 100;
+      }
+
+      // Update the StructuralScore-icon div
+      const scoreDiv = document.getElementById('StructuralScore-icon');
+      if (scoreDiv) {
+          scoreDiv.classList.remove("icon-question");
+          scoreDiv.classList.remove("general-icon");
+          scoreDiv.innerText = `${scorePercentage.toFixed(0)}%`;
+          if (scorePercentage >= 100) {
+              scoreDiv.style.color = 'green';
+          } else if (scorePercentage > 50) {
+            scoreDiv.style.color = 'orange';
+          }
+          else {
+            scoreDiv.style.color = 'red';
+          }
+      }
+  } catch (error) {
+      console.error("Error calculating Structural Score:", error);
+      // Clear the StructuralScore-icon div in case of error
+      const scoreDiv = document.getElementById('StructuralScore-icon');
+      if (scoreDiv) {
+          scoreDiv.innerText = '';
+          if (!scoreDiv.classList.contains("icon-question") && !scoreDiv.classList.contains("general-icon")) {
+              scoreDiv.classList.add("icon-question");
+              scoreDiv.classList.add("general-icon");
+          }
+      }
+  }
+  updateTotalScore();
+}
+
+function updateComparisonScore() {
+  try {
+    // Define the IDs of the four icon divs to check
+    const iconIds = [
+        'Semantic-icon',
+        'Structural-icon',
+        'Behavioral-icon'
+    ];
+
+    let total = iconIds.length;
+    let scores = 0;
+
+    // Iterate over each icon ID
+    iconIds.forEach(id => {
+        const iconElement = document.getElementById(id);
+        if (iconElement) {
+            // Check if the icon has both 'icon-check' and 'fulfilled' classes
+            if (!iconElement.classList.contains('icon-question')) {
+                scores += parseFloat(iconElement.innerText) / 100;
+            }
+            else {
+              total -= 1;
+            }
+        } else {
+            console.warn(`Icon with ID '${id}' not found.`);
+        }
+    });
+
+    // Calculate percentage
+    let scorePercentage = 0;
+    if (total > 0) {
+        scorePercentage = (scores / total) * 100;
+    }
+    else{
+      throw new Error("No comparison scores");
+    }
+
+    // Update the ComparisonScore-icon div
+    const scoreDiv = document.getElementById('ComparisonScore-icon');
+    if (scoreDiv) {
+        scoreDiv.classList.remove("icon-question");
+        scoreDiv.classList.remove("general-icon");
+        scoreDiv.innerText = `${scorePercentage.toFixed(0)}%`;
+        if (scorePercentage >= 100) {
+            scoreDiv.style.color = 'green';
+        } else if (scorePercentage > 50) {
+          scoreDiv.style.color = 'orange';
+        }
+        else {
+          scoreDiv.style.color = 'red';
+        }
+    }
+} catch (error) {
+    //console.error("Error calculating Structural Score:", error);
+    // Clear the ComparisonScore-icon div in case of error
+    const scoreDiv = document.getElementById('ComparisonScore-icon');
+    if (scoreDiv) {
+        scoreDiv.innerText = '';
+        if (!scoreDiv.classList.contains("icon-question") && !scoreDiv.classList.contains("general-icon")) {
+            scoreDiv.classList.add("icon-question");
+            scoreDiv.classList.add("general-icon");
+        }
+    }
+}
+updateTotalScore();
+}
+
+function updateTotalScore() {
+  try {
+    // Define the IDs of the four icon divs to check
+    const iconIds = [
+        'StructuralScore-icon',
+        'ComparisonScore-icon'
+    ];
+
+    let total = iconIds.length;
+    let scores = 0;
+
+    // Iterate over each icon ID
+    iconIds.forEach(id => {
+        const iconElement = document.getElementById(id);
+        if (iconElement) {
+            // Check if the icon has both 'icon-check' and 'fulfilled' classes
+            if (!iconElement.classList.contains('icon-question')) {
+                scores += parseFloat(iconElement.innerText) / 100;
+            }
+            else {
+              total -= 1;
+            }
+        } else {
+            console.warn(`Icon with ID '${id}' not found.`);
+        }
+    });
+
+    // Calculate percentage
+    let scorePercentage = 0;
+    if (total > 0) {
+        scorePercentage = (scores / total) * 100;
+    }
+
+    // Update the TotalScore-icon div
+    const scoreDiv = document.getElementById('TotalScore-icon');
+    if (scoreDiv) {
+        scoreDiv.classList.remove("icon-question");
+        scoreDiv.classList.remove("general-icon");
+        scoreDiv.innerText = `${scorePercentage.toFixed(0)}%`;
+        if (scorePercentage >= 100) {
+            scoreDiv.style.color = 'green';
+        } else if (scorePercentage > 50) {
+          scoreDiv.style.color = 'orange';
+        }
+        else {
+          scoreDiv.style.color = 'red';
+        }
+    }
+} catch (error) {
+    console.error("Error calculating Total Score:", error);
+    // Clear the TotalScore-icon div in case of error
+    const scoreDiv = document.getElementById('TotalScore-icon');
+    if (scoreDiv) {
+        scoreDiv.innerText = '';
+        if (!scoreDiv.classList.contains("icon-question") && !scoreDiv.classList.contains("general-icon")) {
+            scoreDiv.classList.add("icon-question");
+            scoreDiv.classList.add("general-icon");
+        }
+    }
+}
+}

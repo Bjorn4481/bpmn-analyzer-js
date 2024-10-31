@@ -351,7 +351,7 @@ button {
 .properties {
   display: grid;
   grid-template-columns: 1fr 20px;
-  grid-column-gap: 15px;
+  grid-column-gap: 12px;
   grid-row-gap: 5px;
   align-items: center;
 
@@ -366,7 +366,7 @@ button {
   top: 55px;
   left: 50%; /* Move the left edge to 50% of the screen width */
   transform: translateX(-50%); /* Shift the element by half of its own width to center it */
-  padding: 5px;
+  padding: 8px 12px;
   position: fixed;
 }
 

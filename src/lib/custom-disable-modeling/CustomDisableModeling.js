@@ -20,7 +20,12 @@ export default function CustomDisableModeling(
 
   // Prevent context pad actions
   eventBus.on("contextPad.create", function (event) {
-    contextPad.remove();
+    try {
+      contextPad.remove();
+    }
+    catch (e) {
+      //console.error(e);
+    }
     event.preventDefault();
   });
 

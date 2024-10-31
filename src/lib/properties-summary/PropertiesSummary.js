@@ -102,40 +102,59 @@ export default function PropertiesSummary(
 
 PropertiesSummary.prototype._init = function () {
   const html = domify(`
-    <div class="properties">
+      <div class="properties">
+      <!-- Other Property Elements -->
+      
       <div id="Safeness">Synchronization</div>
       <div id="Safeness-icon" class="icon-question general-icon"></div>
+      
       <div id="OptionToComplete">Guaranteed termination</div>
       <div id="OptionToComplete-icon" class="icon-question general-icon"></div>
+      
       <div id="ProperCompletion">Unique end event execution</div>
       <div id="ProperCompletion-icon" class="icon-question general-icon"></div>
+      
       <div id="NoDeadActivities">No dead activities</div>
       <div id="NoDeadActivities-icon" class="icon-question general-icon"></div>
-      <div id="LineBreak"><hr></hr></div>
+      
+      <!-- Line Break -->
+      <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
+      
       <div id="StructuralScore">Structural Score</div>
-      <div id="StructuralScore-icon">90%</div>
-      <div id="LineBreak"><hr></hr></div>
-
+      <div id="StructuralScore-icon" class="icon-question general-icon"></div>
+      
+      <!-- Line Break -->
+      <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
+      
       <div id="Semantic">Semantic similarity</div>
       <div id="Semantic-icon" class="icon-question general-icon"></div>
+      
       <div id="Structural">Structural similarity</div>
       <div id="Structural-icon" class="icon-question general-icon"></div>
+      
       <div id="Behavioral">Behavioral similarity</div>
       <div id="Behavioral-icon" class="icon-question general-icon"></div>
-      <div id="LineBreak"><hr></hr></div>
+      
+      <!-- Line Break -->
+      <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
+      
       <div id="ComparisonScore">Comparison Score</div>
-      <div id="ComparisonScore-icon">60%</div>
-      <div id="LineBreak"><hr></hr></div>
+      <div id="ComparisonScore-icon" class="icon-question general-icon"></div>
+      
+      <!-- Line Break -->
+      <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
-
+      
       <div id="TotalScore">Total Score</div>
-      <div id="TotalScore-icon">75%</div>
-      <div id="LineBreak"><hr></hr></div>
+      <div id="TotalScore-icon" class="icon-question general-icon"></div>
+      
+      <!-- Line Break -->
+      <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
-    </div>
+      </div>
   `);
 
   // this._canvas.getContainer().appendChild(html);
