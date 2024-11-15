@@ -275,7 +275,7 @@ const exportArtifacts = debounce(function () {
     modeler._emit("analysis.start", result);
     setTimeout(updateStructuralScore, 10);
     compareAnalysis.compare(modeler, reference_modeler);
-    setTimeout(updateComparisonScore, 10);
+    setTimeout(updateComparisonScore, 100);
   });
 }, 500);
 
