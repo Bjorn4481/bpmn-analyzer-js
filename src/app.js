@@ -219,7 +219,7 @@ function openReferenceBoard(xml) {
   reference_modeler.importXML(xml).then(function () {
     reference_modeler.get("canvas").zoom("fit-viewport");
     compareAnalysis.compare(modeler, reference_modeler);
-    setTimeout(updateComparisonScore, 10);
+    setTimeout(updateComparisonScore, 500);
   }).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
@@ -445,8 +445,8 @@ function updateComparisonScore() {
           scoreDiv.style.color = 'red';
         }
     }
-} catch (error) {
-    //console.error("Error calculating Structural Score:", error);
+  } catch (error) {
+    // console.error("Error calculating Structural Score:", error);
     // Clear the ComparisonScore-icon div in case of error
     const scoreDiv = document.getElementById('ComparisonScore-icon');
     if (scoreDiv) {
@@ -456,8 +456,8 @@ function updateComparisonScore() {
             scoreDiv.classList.add("general-icon");
         }
     }
-}
-updateTotalScore();
+  }
+  setTimeout(updateTotalScore, 10);
 }
 
 function updateTotalScore() {

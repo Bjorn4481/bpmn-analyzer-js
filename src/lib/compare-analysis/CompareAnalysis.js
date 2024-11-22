@@ -32,8 +32,9 @@ export default class CompareAnalysis {
         }),
       });
       const results = await response.json();
-      console.log(results);
+      // console.log(results);
       this.updateScores(results);
+      this.updateC
       this.updateTaskColor(results["missing_tasks"]);
       this.updateFlowColor(results["correct_flows"]);
     } catch (error) {
@@ -95,6 +96,7 @@ export default class CompareAnalysis {
       }
     }
   }
+  
   async updateTaskColor(missing_tasks) {
     const missing_tasks_ids = [];
     for (let i = 0; i < missing_tasks.length; i++) {
