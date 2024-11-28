@@ -325,12 +325,6 @@ function debounce(fn, timeout) {
 // Create compare analysis instance
 const compareAnalysis = new CompareAnalysis();
 
-// TEST button event listener
-document.getElementById("test").addEventListener("click", function () {
-  compareAnalysis.compare(modeler, reference_modeler);
-  updateComparisonScore();
-});
-
 function updateStructuralScore() {
   try {
       // Define the IDs of the four icon divs to check

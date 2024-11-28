@@ -105,50 +105,50 @@ PropertiesSummary.prototype._init = function () {
       <div class="properties">
       <!-- Other Property Elements -->
       
-      <div id="Safeness">Synchronization</div>
+      <div id="Safeness" class="hint-container" data-hint="Ensures that tasks are properly synchronized to avoid conflicts">Synchronization</div>
       <div id="Safeness-icon" class="icon-question general-icon"></div>
       
-      <div id="OptionToComplete">Guaranteed termination</div>
+      <div id="OptionToComplete" class="hint-container" data-hint="Ensures that all processes have a clear path to completion">Guaranteed termination</div>
       <div id="OptionToComplete-icon" class="icon-question general-icon"></div>
       
-      <div id="ProperCompletion">Unique end event execution</div>
+      <div id="ProperCompletion" class="hint-container" data-hint="Ensures that the process ends with a single, well-defined end event">Unique end event execution</div>
       <div id="ProperCompletion-icon" class="icon-question general-icon"></div>
       
-      <div id="NoDeadActivities">No dead activities</div>
+      <div id="NoDeadActivities" class="hint-container" data-hint="Ensures that all tasks in the process are executable and none are left idle">No dead activities</div>
       <div id="NoDeadActivities-icon" class="icon-question general-icon"></div>
       
       <!-- Line Break -->
       <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
       
-      <div id="StructuralScore">Structural Score</div>
+      <div id="StructuralScore" class="hint-container" data-hint="Combined score for the structure of your BPMN model">Structural Score</div>
       <div id="StructuralScore-icon" class="icon-question general-icon"></div>
       
       <!-- Line Break -->
       <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
       
-      <div id="Semantic">Semantic similarity</div>
+      <div id="Semantic" class="hint-container" data-hint="Coming soon...">Semantic similarity</div>
       <div id="Semantic-icon" class="icon-question general-icon"></div>
       
-      <div id="Structural">Structural similarity</div>
+      <div id="Structural" class="hint-container" data-hint="Compares the structures of both BPMN models">Structural similarity</div>
       <div id="Structural-icon" class="icon-question general-icon"></div>
       
-      <div id="Behavioral">Behavioral similarity</div>
+      <div id="Behavioral" class="hint-container" data-hint="Coming soon...">Behavioral similarity</div>
       <div id="Behavioral-icon" class="icon-question general-icon"></div>
       
       <!-- Line Break -->
       <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
       
-      <div id="ComparisonScore">Comparison Score</div>
+      <div id="ComparisonScore" class="hint-container" data-hint="Combined score for the comparison between both BPMN models">Comparison Score</div>
       <div id="ComparisonScore-icon" class="icon-question general-icon"></div>
       
       <!-- Line Break -->
       <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
       
-      <div id="TotalScore">Total Score</div>
+      <div id="TotalScore" class="hint-container" data-hint="Combined structural and comparison score of your BPMN model">Total Score</div>
       <div id="TotalScore-icon" class="icon-question general-icon"></div>
       
       <!-- Line Break -->
@@ -157,9 +157,9 @@ PropertiesSummary.prototype._init = function () {
       </div>
   `);
 
-  // this._canvas.getContainer().appendChild(html);
   document.body.appendChild(html);
 };
+
 
 PropertiesSummary.$inject = [
   "eventBus",
