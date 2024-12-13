@@ -219,7 +219,7 @@ function openReferenceBoard(xml) {
   reference_modeler.importXML(xml).then(function () {
     reference_modeler.get("canvas").zoom("fit-viewport");
     compareAnalysis.compare(modeler, reference_modeler);
-    setTimeout(updateComparisonScore, 500);
+    //setTimeout(updateComparisonScore, 1000); Is currently updated within the compare() function
   }).catch(function (err) {
     if (err) {
       return console.error("could not import xml", err);
@@ -275,7 +275,7 @@ const exportArtifacts = debounce(function () {
     modeler._emit("analysis.start", result);
     setTimeout(updateStructuralScore, 10);
     compareAnalysis.compare(modeler, reference_modeler);
-    setTimeout(updateComparisonScore, 100);
+    setTimeout(updateComparisonScore, 250);
   });
 }, 500);
 
@@ -515,3 +515,6 @@ function updateTotalScore() {
     }
 }
 }
+
+
+// Find out if signavio vs bpmn.io

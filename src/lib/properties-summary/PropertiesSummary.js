@@ -9,16 +9,22 @@ export default function PropertiesSummary(
   overlays,
   canvas,
   elementRegistry,
+  bpmnFactory,
+  bpmnjs,
 ) {
   eventBus.on("analysis.done", handleAnalysis);
   this._canvas = canvas;
+  this._bpmnjs = bpmnjs;
 
   this._init();
 
-  function handleAnalysis(result) {
+  async function handleAnalysis(result) {
     if (result.unsupported_elements && result.unsupported_elements.length > 0) {
-      addWarningForUnsupportedElements(result);
-      return;
+      //console.log("Unsupported elements found: ", result.unsupported_elements);
+      //addWarningForUnsupportedElements(result);
+      const modifiedXML = await createModifiedXML(result.unsupported_elements);
+      eventBus.fire("analysis.start", { xml: modifiedXML });
+      //return;
     }
 
     if (result.property_results.length !== 4) {
@@ -28,6 +34,40 @@ export default function PropertiesSummary(
     for (const propertyResult of result.property_results) {
       setPropertyColorAndIcon(propertyResult);
     }
+  }
+
+  async function createModifiedXML(unsupportedElements) {
+    const { xml } = await bpmnjs.saveXML({ format: true });
+    const moddle = bpmnjs.get('moddle');
+    const { rootElement } = await moddle.fromXML(xml);
+
+    unsupportedElements.forEach(elementId => {
+      const element = elementRegistry.get(elementId);
+      if (element) {
+        const incoming = element.incoming.slice();
+        const outgoing = element.outgoing.slice();
+
+        // Remove the unsupported element and its incoming/outgoing flows from the XML
+        rootElement.rootElements[0].flowElements = rootElement.rootElements[0].flowElements.filter(child => {
+          return child.id !== elementId && !incoming.some(flow => flow.id === child.id) && !outgoing.some(flow => flow.id === child.id);
+        });
+
+        // Connect incoming and outgoing connections in the XML
+        incoming.forEach(incomingConnection => {
+          outgoing.forEach(outgoingConnection => {
+            const sequenceFlow = bpmnFactory.create('bpmn:SequenceFlow', {
+              id: `Flow_${Math.random().toString(36).substring(2, 9)}`,
+              sourceRef: incomingConnection.source,
+              targetRef: outgoingConnection.target
+            });
+            rootElement.rootElements[0].flowElements.push(sequenceFlow);
+          });
+        });
+      }
+    });
+
+    const { xml: modifiedXML } = await moddle.toXML(rootElement, { format: true, prettify: true });
+    return modifiedXML;
   }
 
   function addWarningForUnsupportedElements(result) {
@@ -166,4 +206,6 @@ PropertiesSummary.$inject = [
   "overlays",
   "canvas",
   "elementRegistry",
+  "bpmnFactory",
+  "bpmnjs",
 ];

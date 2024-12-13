@@ -34,7 +34,6 @@ export default class CompareAnalysis {
       const results = await response.json();
       // console.log(results);
       this.updateScores(results);
-      this.updateC
       this.updateTaskColor(results["missing_tasks"]);
       this.updateFlowColor(results["correct_flows"]);
     } catch (error) {
@@ -62,7 +61,12 @@ export default class CompareAnalysis {
 
     try {
       if (results["similarity1"] !== undefined) {
-        const similarity_score = (results["similarity1"] + results["similarity2"] + results["similarity3"]) / 3;
+        let similarity_score;
+        if (results["similarity2"] !== null) {
+          similarity_score = (results["similarity1"] + results["similarity2"] + results["similarity3"]) / 3;
+        } else {
+          similarity_score = (results["similarity1"] + results["similarity3"]) / 2;
+        }
         // Convert similarity to percentage with three decimal places
         const similarityPercentage =
           (similarity_score * 100).toFixed(0) + "%";
@@ -95,6 +99,9 @@ export default class CompareAnalysis {
         structuralDiv.classList.add("general-icon");
       }
     }
+
+    // Update the Comparison Score
+    updateComparisonScore();
   }
   
   async updateTaskColor(missing_tasks) {
@@ -152,4 +159,133 @@ export default class CompareAnalysis {
       }
     });
   }
+}
+
+function updateComparisonScore() {
+  try {
+    // Define the IDs of the four icon divs to check
+    const iconIds = [
+        'Semantic-icon',
+        'Structural-icon',
+        'Behavioral-icon'
+    ];
+
+    let total = iconIds.length;
+    let scores = 0;
+
+    // Iterate over each icon ID
+    iconIds.forEach(id => {
+        const iconElement = document.getElementById(id);
+        if (iconElement) {
+            // Check if the icon has both 'icon-check' and 'fulfilled' classes
+            if (!iconElement.classList.contains('icon-question')) {
+                scores += parseFloat(iconElement.innerText) / 100;
+            }
+            else {
+              total -= 1;
+            }
+        } else {
+            console.warn(`Icon with ID '${id}' not found.`);
+        }
+    });
+
+    // Calculate percentage
+    let scorePercentage = 0;
+    if (total > 0) {
+        scorePercentage = (scores / total) * 100;
+    }
+    else{
+      throw new Error("No comparison scores");
+    }
+
+    // Update the ComparisonScore-icon div
+    const scoreDiv = document.getElementById('ComparisonScore-icon');
+    if (scoreDiv) {
+        scoreDiv.classList.remove("icon-question");
+        scoreDiv.classList.remove("general-icon");
+        scoreDiv.innerText = `${scorePercentage.toFixed(0)}%`;
+        if (scorePercentage >= 100) {
+            scoreDiv.style.color = 'green';
+        } else if (scorePercentage > 50) {
+          scoreDiv.style.color = 'orange';
+        }
+        else {
+          scoreDiv.style.color = 'red';
+        }
+    }
+  } catch (error) {
+    // console.error("Error calculating Structural Score:", error);
+    // Clear the ComparisonScore-icon div in case of error
+    const scoreDiv = document.getElementById('ComparisonScore-icon');
+    if (scoreDiv) {
+        scoreDiv.innerText = '';
+        if (!scoreDiv.classList.contains("icon-question") && !scoreDiv.classList.contains("general-icon")) {
+            scoreDiv.classList.add("icon-question");
+            scoreDiv.classList.add("general-icon");
+        }
+    }
+  }
+  updateTotalScore();
+}
+
+function updateTotalScore() {
+  try {
+    // Define the IDs of the four icon divs to check
+    const iconIds = [
+        'StructuralScore-icon',
+        'ComparisonScore-icon'
+    ];
+
+    let total = iconIds.length;
+    let scores = 0;
+
+    // Iterate over each icon ID
+    iconIds.forEach(id => {
+        const iconElement = document.getElementById(id);
+        if (iconElement) {
+            // Check if the icon has both 'icon-check' and 'fulfilled' classes
+            if (!iconElement.classList.contains('icon-question')) {
+                scores += parseFloat(iconElement.innerText) / 100;
+            }
+            else {
+              total -= 1;
+            }
+        } else {
+            console.warn(`Icon with ID '${id}' not found.`);
+        }
+    });
+
+    // Calculate percentage
+    let scorePercentage = 0;
+    if (total > 0) {
+        scorePercentage = (scores / total) * 100;
+    }
+
+    // Update the TotalScore-icon div
+    const scoreDiv = document.getElementById('TotalScore-icon');
+    if (scoreDiv) {
+        scoreDiv.classList.remove("icon-question");
+        scoreDiv.classList.remove("general-icon");
+        scoreDiv.innerText = `${scorePercentage.toFixed(0)}%`;
+        if (scorePercentage >= 100) {
+            scoreDiv.style.color = 'green';
+        } else if (scorePercentage > 50) {
+          scoreDiv.style.color = 'orange';
+        }
+        else {
+          scoreDiv.style.color = 'red';
+        }
+    }
+} catch (error) {
+    console.error("Error calculating Total Score:", error);
+    // Clear the TotalScore-icon div in case of error
+    const scoreDiv = document.getElementById('TotalScore-icon');
+    if (scoreDiv) {
+        scoreDiv.innerText = '';
+        if (!scoreDiv.classList.contains("icon-question") && !scoreDiv.classList.contains("general-icon")) {
+            scoreDiv.classList.add("icon-question");
+            scoreDiv.classList.add("general-icon");
+        }
+    }
+}
 }
