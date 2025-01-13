@@ -168,8 +168,10 @@ PropertiesSummary.prototype._init = function () {
       <div class="linebreak"><hr></div>
       <div id="LineBreak-icon"></div>
       
-      <div id="Semantic" class="hint-container" data-hint="Coming soon...">Semantic similarity</div>
+      <div id="Semantic" class="hint-container" data-hint="Uses a LLM model to compare the names of tasks in both models">Semantic similarity</div>
       <div id="Semantic-icon" class="icon-question general-icon"></div>
+
+      
       
       <div id="Structural" class="hint-container" data-hint="Compares the structures of both BPMN models">Structural similarity</div>
       <div id="Structural-icon" class="icon-question general-icon"></div>
